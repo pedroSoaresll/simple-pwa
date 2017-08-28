@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <title>Primeira progressive web app</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <link href="css/style.css" rel="stylesheet"> -->
+        <link rel="manifest" href="/manifest.json">
+        <link rel="icon" href="launcher-icon-4x.png"> 
+        <!-- <meta name="mobile-web-app-capable" content="yes"> -->
+         <meta name="theme-color" content="#333333"> 
+        
+    </head>
+
+    <body>
+
+        <main>
+            
+            <section>
+
+                <header>    
+                    <h1>Pagina offline</h1>
+                </header>
+
+                <div>
+                    Conteudo ola
+                    <img src="launcher-icon-4x.png" alt="icone">
+                </div>
+
+            </section>
+
+        </main>
+
+        <script>
+            
+            if ('serviceWorker' in navigator) {
+                console.log("Will the service worker register?")
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(reg => {
+
+                        console.log("Yes, it did. ", reg.scope)
+
+                        if (reg.installing) console.log('Service worker installing')
+                        else if (reg.waiting) console.log('Service worker installed')
+                        else if (reg.active) console.log('Service worker active')
+                       
+
+                    }).catch(err => console.log("No it didn't. This happened: ", err))
+            }
+
+            window.addEventListener('beforeinstallprompt', e => {
+
+                console.log('antes do prompt de instalação')
+
+                e.userChoice.then(choiceResult => {
+
+                    console.log(choiceResult.outcome)
+
+                    if (choiceResult.outcome == 'dismissed') {
+                        console.log('usuário cancelou a instalação, home screen')
+                    } else {
+                        console.log('usuário adicionou ao home screen')
+                    }
+
+                })
+
+            })
+
+        </script>
+
+    </body>
+
+</html>
